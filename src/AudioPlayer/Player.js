@@ -8,11 +8,6 @@ class Player extends Playlist {
     this.addEventListeners();
   }
 
-  load(val) {
-    this.element.src = val;
-    this.element.load();
-  }
-
   pause() {
     return this.element.pause() || Promise.resolve();
   }
@@ -24,6 +19,25 @@ class Player extends Playlist {
   stop() {
     this.pause();
     return (this.element.src = "") || Promise.resolve();
+  }
+
+  next() {
+    this._playlist_Next();
+    this._load();
+  }
+
+  prev() {
+    this._playlist_Prev();
+    this._load();
+  }
+
+  load_playlist(val) {
+    this._playlist_Load(val)
+  }
+
+  _load() {
+    this.element.src = this.select;
+    this.element.load();
   }
 
   get muted() {
@@ -51,11 +65,11 @@ class Player extends Playlist {
   }
 
   addEventListeners() {
-    this.element.addEventListener('ended', this.playlist_Next());
+    this.element.addEventListener('ended', ()=>this.next());
   }
 
   removeEventListeners() {
-    this.element.removeEventListener('ended', this.playlist_Next());
+    this.element.removeEventListener('ended', ()=>this.next());
   }
 }
 

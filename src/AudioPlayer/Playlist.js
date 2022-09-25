@@ -11,46 +11,47 @@ class Playlist {
     this.select = {}; // object
   }
 
-  playlist_AddListener() {}
-  playlist_removeListener() {}
-  playlist_Delete() {}
-  playlist_Create() {}
-  playlist_Modify() {}
+  _playlist_AddListener() {}
+  _playlist_RemoveListener() {}
+  _playlist_Delete() {}
+  _playlist_Create() {}
+  _playlist_Modify() {}
 
-  playlist_Next() {
-    if (this.has_next) {
-      this.current++;
+  _playlist_Load(items) {
+    this.items = items;
+    this.items_backup = [];
+  }
 
-      if (this.current >= this.items.length) {
-        this.current = this.items.length - 1;
-        this.has_next = false;
-      } else this.has_next = true;
-    }
+  _playlist_Next() {
+    this.current += 1;
+
+    if (this.current >= this.items.length) {
+      this.current = this.items.length - 1;
+      this.has_next = false;
+    } else this.has_next = true;
 
     this.select = this.items[this.current];
   }
 
-  playlist_Prev() {
-    if (this.has_prev) {
-      this.current--;
+  _playlist_Prev() {
+    this.current -= 1;
 
-      if (this.current <= 0) {
-        this.current = 0;
-        this.has_prev = false;
-      } else this.has_prev = true;
-    }
+    if (this.current <= 0) {
+      this.current = 0;
+      this.has_prev = false;
+    } else this.has_prev = true;
 
     this.select = this.items[this.current];
   }
 
-  playlist_Randrange(min, max) {
+  _playlist_Randrange(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min);
   }
 
   /* Fisher-Yates shuffle */
-  playlist_Shuffle() {
+  _playlist_Shuffle() {
     this.items_backup = this.items.slice();
     for (let x = this.items.length - 1; x > 0; x--) {
       let az = this.randrange(0, x - 1);
