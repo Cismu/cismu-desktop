@@ -63,25 +63,15 @@ class Slider extends React.Component {
     event.preventDefault();
     let target = this.target;
     let coordinates = target.getBoundingClientRect();
-    let distanceX;
 
     if (event.clientX < coordinates.left) {
-      distanceX = coordinates.left - event.clientX;
+      this.updatePercentage(0);
+      return;
     } else if (event.clientX > coordinates.right) {
-      distanceX = event.clientX - coordinates.left;
+      this.updatePercentage(100);
     } else {
-      distanceX = 0;
-    }
-
-    if (!distanceX) {
       let targetX = event.clientX - coordinates.left;
-      let percentage = (targetX / coordinates.width) * 100;
-      this.updatePercentage(percentage);
-    } else {
-      // Restar coordinates.right a coordinates.width
-      console.log(coordinates.right, distanceX)
-      let percentage = (100 / coordinates.width) * 100;
-      this.updatePercentage(percentage);
+      this.updatePercentage((targetX / coordinates.width) * 100);
     }
   }
 
